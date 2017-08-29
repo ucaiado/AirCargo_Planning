@@ -6,6 +6,17 @@ __pycache__/
 # C extensions
 *.so
 
+# TEX stuff
+*.aux
+*.out
+*.blg
+*.log
+*.bbl
+
+# other
+.DS_Store
+
+
 # Distribution / packaging
 .Python
 env/

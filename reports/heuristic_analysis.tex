@@ -1,0 +1,136 @@
+\documentclass[a4paper]{article}
+
+\usepackage[sort]{natbib}
+\usepackage{fancyhdr}
+
+
+% \documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{hyperref}
+\usepackage{booktabs} % To thicken table lines
+\usepackage{tablefootnote}
+\usepackage{listings}
+% \usepackage[numbers]{natbib}
+
+\usepackage{graphicx}
+\usepackage{babel,blindtext}
+
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+
+
+
+
+
+% you may include other packages here (next line)
+\usepackage{enumitem}
+
+
+
+%----- you must not change this -----------------
+\oddsidemargin 0.2cm
+\topmargin -1.0cm
+\textheight 24.0cm
+\textwidth 15.25cm
+% \parindent=0pt
+\parskip 1ex
+\renewcommand{\baselinestretch}{1.1}
+\pagestyle{fancy}
+%----------------------------------------------------
+
+
+
+% enter your details here----------------------------------
+
+\lhead{\normalsize \textrm{Implement a Planning Search - Heuristic Analysis}}
+\chead{}
+\rhead{\normalsize August 28, 2017}
+\lfoot{\normalsize \textrm{AIND - Udacity}}
+\cfoot{}
+\rfoot{Uirá Caiado}
+\setlength{\fboxrule}{4pt}\setlength{\fboxsep}{2ex}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+
+\begin{document}
+
+
+%----------------your title below -----------------------------
+
+\begin{center}
+
+{\bf \large Bla bla \\ \small Uirá Caiado}
+\end{center}
+
+
+%---------------- start of document body------------------
+
+Bla bla \cite{Economist2017}, bla bla.
+
+In this project, bla bla.
+
+To solve bla bla.
+
+However, bla bla.
+
+% Udacity: An optimal sequence of actions is identified for each problem in the written report.
+
+% Udacity: Does the performance comparison analyze the performance of the algorithms compared?
+
+Bla bla
+
+
+% Udacity: Does the performance comparison give sufficient justification for its results?
+
+
+
+
+
+Bla bla . To do so, I used a one-sided Welch's unequal variances t-test\footnote{Source: \url{https://goo.gl/Je2ZLP}} for the null hypothesis that the agent using custom heuristic has the expected win rate greater than the performance of an agent using the benchmark heuristic. As the implementation of the t-test in the Scipy\footnote{Source: \url{https://goo.gl/gs222c}} assumes a two-sided t-test, to perform the one-sided test, we have to divide the p-value by $2$ to compare to a critical value of $0.05$ and require that the t-value be greater than zero.
+
+
+% Udacity: The report makes a recommendation about which evaluation function should be used and justifies the recommendation with at least three reasons supported by the data.
+
+bla bla
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% ----------------end of document body---------------------
+
+%---------------- start of references------------------
+
+\bibliographystyle{plain}
+% or try abbrvnat or unsrtnat
+\bibliography{biblio.bib}
+
+%---------------- end of references------------------
+
+
+\end{document}

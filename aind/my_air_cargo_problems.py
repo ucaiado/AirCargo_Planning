@@ -1,31 +1,37 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+"""
+...
+
+
+@author: Udacity, ucaiado
+
+Created on 08/28/2017
+"""
 from aimacode.logic import PropKB
 from aimacode.planning import Action
-from aimacode.search import (
-    Node, Problem,
-)
+from aimacode.search import (Node, Problem)
 from aimacode.utils import expr
-from lp_utils import (
-    FluentState, encode_state, decode_state,
-)
+from lp_utils import (FluentState, encode_state, decode_state)
 from my_planning_graph import PlanningGraph
-
 from functools import lru_cache
 
 
 class AirCargoProblem(Problem):
-    def __init__(self, cargos, planes, airports, initial: FluentState, goal: list):
+    '''
+    An represantation of a Air Cargo Problem
+    '''
+    def __init__(self, cargos, planes, airports, initial: FluentState,
+                 goal: list):
         """
+        Initialize an AirCargoProblem object. Save all parameters as attributes
 
-        :param cargos: list of str
-            cargos in the problem
-        :param planes: list of str
-            planes in the problem
-        :param airports: list of str
-            airports in the problem
-        :param initial: FluentState object
-            positive and negative literal fluents (as expr) describing initial state
-        :param goal: list of expr
-            literal fluents required for goal test
+        :param cargos: list of str. cargos in the problem
+        :param planes: list of str. planes in the problem
+        :param airports: list of str. airports in the problem
+        :param initial: FluentState object. positive and negative literal
+            fluents (as expr) describing initial state
+        :param goal: list of expr. literal fluents required for goal test
         """
         self.state_map = initial.pos + initial.neg
         self.initial_state_TF = encode_state(initial, self.state_map)
@@ -37,21 +43,23 @@ class AirCargoProblem(Problem):
 
     def get_actions(self):
         """
-        This method creates concrete actions (no variables) for all actions in the problem
-        domain action schema and turns them into complete Action objects as defined in the
-        aimacode.planning module. It is computationally expensive to call this method directly;
-        however, it is called in the constructor and the results cached in the `actions_list` property.
+        This method creates concrete actions (no variables) for all actions in
+        the problem domain action schema and turns them into complete Action
+        objects as defined in the aimacode.planning module. It is
+        computationally expensive to call this method directly; however, it is
+        called in the constructor and the results cached in the `actions_list`
+        property.
 
-        Returns:
-        ----------
-        list<Action>
-            list of Action objects
+        :return: list<Action>. list of Action objects
         """
 
-        # TODO create concrete Action objects based on the domain action schema for: Load, Unload, and Fly
-        # concrete actions definition: specific literal action that does not include variables as with the schema
-        # for example, the action schema 'Load(c, p, a)' can represent the concrete actions 'Load(C1, P1, SFO)'
-        # or 'Load(C2, P2, JFK)'.  The actions for the planning problem must be concrete because the problems in
+        # TODO create concrete Action objects based on the domain action
+        # schema for: Load, Unload, and Fly
+        # concrete actions definition: specific literal action that does not
+        # include variables as with the schema. For example, the action schema
+        # 'Load(c, p, a)' can represent the concrete actions
+        # 'Load(C1, P1, SFO)' or 'Load(C2, P2, JFK)'.  The actions for the
+        # planning problem must be concrete because the problems in
         # forward search and Planning Graphs must use Propositional Logic
 
         def load_actions():
@@ -69,7 +77,7 @@ class AirCargoProblem(Problem):
             :return: list of Action objects
             """
             unloads = []
-            # TODO create all Unload ground actions from the domain Unload action
+            # TODO create all Unload ground actions from the domain Unload actn
             return unloads
 
         def fly_actions():
@@ -85,9 +93,10 @@ class AirCargoProblem(Problem):
                             precond_pos = [expr("At({}, {})".format(p, fr)),
                                            ]
                             precond_neg = []
+                            s_txt = "Fly({}, {}, {})"
                             effect_add = [expr("At({}, {})".format(p, to))]
                             effect_rem = [expr("At({}, {})".format(p, fr))]
-                            fly = Action(expr("Fly({}, {}, {})".format(p, fr, to)),
+                            fly = Action(expr(s_txt.format(p, fr, to)),
                                          [precond_pos, precond_neg],
                                          [effect_add, effect_rem])
                             flys.append(fly)
@@ -157,7 +166,7 @@ class AirCargoProblem(Problem):
         conditions by ignoring the preconditions required for an action to be
         executed.
         """
-        # TODO implement (see Russell-Norvig Ed-3 10.2.3  or Russell-Norvig Ed-2 11.2)
+        # TODO implement (see Russell-Norvig Ed-3 10.2.3)
         count = 0
         return count
 
