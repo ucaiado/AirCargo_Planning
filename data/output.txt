@@ -246,3 +246,12 @@ Fly(P2, ORD, SFO)
 Unload(C4, P2, SFO)
 Unload(C2, P2, SFO)
 
+
+Solving Air Cargo Problem 3 using depth_limited_search...
+
+More than 10 minutes
+
+
+Solving Air Cargo Problem 3 using breadth_first_tree_search...
+
+More than 10 minutes
