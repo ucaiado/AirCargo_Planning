@@ -10,10 +10,10 @@ This project requires **Python 3.4** or higher and the following Python librarie
 
 
 ### Run
-In a terminal or command window, navigate to the top-level project directory `Isolation/` (that contains this README) and run the following command:
+In a terminal or command window, navigate to the top-level project directory `AirCargo_Planning/` (that contains this README) and run the following command:
 
 ```shell
-$ python -m aind.foo
+$ python aind/run_search.py -m
 ```
 
 
