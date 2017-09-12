@@ -15,6 +15,9 @@
 \usepackage{booktabs} % To thicken table lines
 \usepackage{tablefootnote}
 \usepackage{listings}
+\usepackage{tabularx}
+\usepackage{makecell}
+\usepackage{mathtools}
 % \usepackage[numbers]{natbib}
 
 \usepackage{graphicx}
@@ -50,7 +53,7 @@
 
 \lhead{\normalsize \textrm{Implement a Planning Search - Heuristic Analysis}}
 \chead{}
-\rhead{\normalsize August 28, 2017}
+\rhead{\normalsize September 8, 2017}
 \lfoot{\normalsize \textrm{AIND - Udacity}}
 \cfoot{}
 \rfoot{Uirá Caiado}
@@ -66,56 +69,159 @@
 
 \begin{center}
 
-{\bf \large Bla bla \\ \small Uirá Caiado}
+{\bf \large Heuristic Analysis For An Air Cargo Planner \\ \small Uirá Caiado}
 \end{center}
 
 
 %---------------- start of document body------------------
 
-Bla bla \cite{Economist2017}, bla bla.
+Given that human planning is the act of approaching goals (\cite{ushshaquestudy2015}), a planning agent should find a sequence of actions for transforming a given state into a state which fulfills a predefined set of goals. Problem-solving agents are used to solving similar problems. So, why not use these algorithms to solve planning tasks?
 
-In this project, bla bla.
+Because, as explained by \cite{russelartificial}, these algorithms require a good domain-specific heuristic to perform well. Also, in many real world applications, the atomic representation of states used by problem-solving techniques might not be feasible. On the other hand, a planning agent uses a collection of variables to represent the states of the environment, drastically reducing its state space. Also, even though a heuristic is still necessary, one can use a function derived from a relaxed version of the problem at hand.
 
-To solve bla bla.
+In this project, we solved deterministic logistics planning problems for an Air Cargo transport system using a planning search agent with automatically generated heuristics. The first task is to transport the cargo $C1$ and $C2$ from the airports $SFO$ and $JFK$ to the airports $JFK$ and $SFO$, respectively, using two airplanes, $P1$ and $P2$. Defining the problems in classical Planning Domain Definition Language (PDDL), we can write:
+\begin{equation*}
+  \begin{aligned}
+    \mbox{Init}(&\mbox{At}(C1, SFO) \wedge \mbox{At}(C2, JFK) \\
+         &\wedge \mbox{At}(P1, SFO) \wedge \mbox{At}(P2, JFK) \\
+         &\wedge \mbox{Cargo}(C1) \wedge \mbox{Cargo}(C2) \\
+         &\wedge \mbox{Plane}(P1) \wedge \mbox{Plane}(P2) \\
+         &\wedge \mbox{Airport}(JFK) \wedge \mbox{Airport}(SFO))\\
+    \mbox{Goal}(&\mbox{At}(C1, JFK) \wedge \mbox{At}(C2, SFO))
+  \end{aligned}
+\end{equation*}
 
-However, bla bla.
+The second problem is transporting the cargo $C1$, $C2$ and $C3$ from the airports $SFO$, $JFK$ and $ATL$ to the airports $JFK$, $SFO$ and $SFO$, respectively, using three airplanes, $P1$, $P2$ and $P3$.
+\begin{equation*}
+  \begin{aligned}
+    \mbox{Init}(&\mbox{At}(C1, SFO) \wedge \mbox{At}(C2, JFK) \wedge \mbox{At}(C3, ATL) \\
+         &\wedge \mbox{At}(P1, SFO) \wedge \mbox{At}(P2, JFK) \wedge \mbox{At}(P3, ATL)\\
+         &\wedge \mbox{Cargo}(C1) \wedge \mbox{Cargo}(C2) \wedge \mbox{Cargo}(C3)\\
+         &\wedge \mbox{Plane}(P1) \wedge \mbox{Plane}(P2) \wedge \mbox{Plane}(P3)\\
+         &\wedge \mbox{Airport}(JFK) \wedge \mbox{Airport}(SFO) \wedge \mbox{Airport}(ATL))\\
+    \mbox{Goal}(&\mbox{At}(C1, JFK) \wedge \mbox{At}(C2, SFO) \wedge \mbox{At}(C3, SFO))
+  \end{aligned}
+\end{equation*}
+
+The last problem is transporting the cargo $C1$, $C2$, $C3$ and $C4$ from the airports $SFO$, $JFK$, $ATL$ and $ORD$ to the airports $JFK$, $JFK$, $SFO$ and $SFO$, respectively, using the airplanes $P1$ and $P2$.
+\begin{equation*}
+  \begin{aligned}
+    \mbox{Init}(&\mbox{At}(C1, SFO) \wedge \mbox{At}(C2, JFK) \wedge \mbox{At}(C3, ATL) \wedge \mbox{At}(C4, ORD) \\
+         &\wedge \mbox{At}(P1, SFO) \wedge \mbox{At}(P2, JFK)\\
+         &\wedge \mbox{Cargo}(C1) \wedge \mbox{Cargo}(C2) \wedge \mbox{Cargo}(C3)  \wedge \mbox{Cargo}(C4)\\
+         &\wedge \mbox{Plane}(P1) \wedge \mbox{Plane}(P2) \\
+         &\wedge \mbox{Airport}(JFK) \wedge \mbox{Airport}(SFO) \wedge \mbox{Airport}(ATL) \wedge \mbox{Airport}(ORD))\\
+    \mbox{Goal}(&\mbox{At}(C1, JFK) \wedge \mbox{At}(C3, JFK) \wedge \mbox{At}(C2, SFO) \wedge \mbox{At}(C4, SFO))
+  \end{aligned}
+\end{equation*}
+
+
+In the table \ref{tab:final_results} are presented different non-heuristic search\footnote{Source: \url{http://cs.lmu.edu/~ray/notes/usearch/}} methods that were tested to try to find an optimal solution to the air cargo logistics problems.
+
+% Udacity: Does the performance comparison analyze the performance of the algorithms compared? Provide metrics on number of node expansions required, number of goal tests, time elapsed, and optimality of solution for each search algorithm. Include the result of at least three of these searches, including breadth-first and depth-first, in your write-up (`breadth_first_search` and `depth_first_graph_search`)
+
+
+\begin{table}[ht!]
+\centering
+\begin{tabular}{lllrlrr}
+{Non-Heuristic Search} & Problem & Optimality &  Goal Tests & Time (s) &  Expansions &  Plan Length \\
+\midrule
+breadth first                   &       1 &         Yes &       56 &         0.06 &       43 &          6 \\
+breadth first                   &       2 &         Yes &     4609 &        21.98 &     3343 &          9 \\
+breadth first                   &       3 &         Yes &    18098 &       144.07 &    14663 &         12 \\
+breadth first tree              &       1 &         Yes &     1459 &         1.52 &     1458 &          6 \\
+breadth first tree              &       2 &         No &        - &   $>600$ &        - &          - \\
+breadth first tree              &       3 &         No &        - &   $>600$ &        - &          - \\
+depth first graph               &       1 &         No &       13 &         0.01 &       12 &         12 \\
+depth first graph               &       2 &         No &     1670 &        12.34 &     1669 &       1444 \\
+depth first graph               &       3 &         No &      593 &         2.86 &      592 &        571 \\
+depth limited                   &       1 &         No &      271 &         0.13 &      101 &         50 \\
+depth limited                   &       2 &         No &        - &   $>600$ &        - &          - \\
+depth limited                   &       3 &         No &        - &   $>600$ &        - &          - \\
+uniform cost                    &       1 &         Yes &       57 &         0.06 &       55 &          6 \\
+uniform cost                    &       2 &         Yes &     4854 &        21.17 &     4852 &          9 \\
+uniform cost                    &       3 &         Yes &    18237 &        99.01 &    18235 &         12 \\
+\end{tabular}
+\caption{\label{tab:final_results}Non-Heuristics Search performances}
+\end{table}
+
+As can be seen, just the \textit{breadth first search} and \textit{uniform cost search} were able to find an optimal solution to the three problems. The first one was slightly faster than the second one and also used less node expasions and goal tests to find the solutions. The \textit{breadth first tree search} and \textit{depth limited search} have taken more than 10 minutes to solve the problemns $2$ and $3 $ and were terminated before find a solution. The optimal solutions to these problems are described in the table \ref{tab:results}.
+
 
 % Udacity: An optimal sequence of actions is identified for each problem in the written report.
 
-% Udacity: Does the performance comparison analyze the performance of the algorithms compared?
 
-Bla bla
+\begin{table}[ht!]
+\centering
+\begin{tabular}{ccc}
+Problem 1 & Problem 2 & Problem 3 \\
+\hline
+\textbf{Plan length 6} & \textbf{Plan length 9} & \textbf{Plan length 12} \\
+$\begin{aligned}[t]
+\mbox{Load}(C2, P2, JFK)\\
+\mbox{Load}(C1, P1, SFO)\\
+\mbox{Fly}(P2, JFK, SFO)\\
+\mbox{Unload}(C2, P2, SFO)\\
+\mbox{Fly}(P1, SFO, JFK)\\
+\mbox{Unload}(C1, P1, JFK)
+\end{aligned}$ &
+$\begin{aligned}[t]
+\mbox{Load}(C2, P2, JFK)\\
+\mbox{Load}(C1, P1, SFO)\\
+\mbox{Load}(C3, P3, ATL)\\
+\mbox{Fly}(P2, JFK, SFO)\\
+\mbox{Unload}(C2, P2, SFO)\\
+\mbox{Fly}(P1, SFO, JFK)\\
+\mbox{Unload}(C1, P1, JFK)\\
+\mbox{Fly}(P3, ATL, SFO)\\
+\mbox{Unload}(C3, P3, SFO)
+\end{aligned}$ &
+$\begin{aligned}[t]
+\mbox{Load}(C2, P2, JFK)\\
+\mbox{Load}(C1, P1, SFO)\\
+\mbox{Fly}(P2, JFK, ORD)\\
+\mbox{Load}(C4, P2, ORD)\\
+\mbox{Fly}(P1, SFO, ATL)\\
+\mbox{Load}(C3, P1, ATL)\\
+\mbox{Fly}(P1, ATL, JFK)\\
+\mbox{Unload}(C1, P1, JFK)\\
+\mbox{Unload}(C3, P1, JFK)\\
+\mbox{Fly}(P2, ORD, SFO)\\
+\mbox{Unload}(C2, P2, SFO)\\
+\mbox{Unload}(C4, P2, SFO)
+\end{aligned}$ \\
+\end{tabular}
+\caption{\label{tab:results}Optimal Solutions}
+\end{table}
 
 
 % Udacity: Does the performance comparison give sufficient justification for its results?
 
 
+Neither the search methods tested are expected to be much efficient without using a heuristic. In the table \ref{tab:final_results2} is presented the results to the tests performed using the algorithm $A^{*}$ in conjunctions with two heuristic search strategies: \textit{ignore preconditions} and \textit{levelsum}.
+
+\begin{table}[ht!]
+\centering
+\begin{tabular}{lllrlrr}
+{$A^{*}$ Heuristic Search} & Problem & Optimality & Goal Tests & Time (s) & Expansions & Plan Length \\
+\midrule
+Ignore preconditions &       1 &         Yes &        43 &         0.03 &        41 &           6 \\
+Ignore preconditions &       2 &         Yes &      1452 &         3.98 &      1450 &           9 \\
+Ignore preconditions &       3 &         Yes &      5042 &        14.35 &      5040 &          12 \\
+Levelsum          &       1 &         Yes &        48 &         0.59 &        46 &           6 \\
+Levelsum          &       2 &         Yes &      2897 &       247.71 &      2895 &           9 \\
+Levelsum          &       3 &         Yes &     11395 &      1538.87 &     11393 &          12 \\
+\end{tabular}
+\caption{\label{tab:final_results2}Heuristics Search performances}
+\end{table}
 
 
-
-Bla bla . To do so, I used a one-sided Welch's unequal variances t-test\footnote{Source: \url{https://goo.gl/Je2ZLP}} for the null hypothesis that the agent using custom heuristic has the expected win rate greater than the performance of an agent using the benchmark heuristic. As the implementation of the t-test in the Scipy\footnote{Source: \url{https://goo.gl/gs222c}} assumes a two-sided t-test, to perform the one-sided test, we have to divide the p-value by $2$ to compare to a critical value of $0.05$ and require that the t-value be greater than zero.
-
+As explained by \cite{russelartificial}, both heuristics are derived by defining a relaxed version of the problems, easier to solve. The cost of the solutions to this other problems becomes the heuristic for the original ones. Using \textit{ignore preconditions}, all action becomes applicable in every state, implying that any goal fluent is achievable in one step (it is unsolvable otherwise). \textit{Level sum} is derived using a data structure called planning graph that is divided into levels of states and actions. Each level is a step towards the solution of the problem. Then, the heuristic consists of counting the number of levels to achieve the goal.
 
 % Udacity: The report makes a recommendation about which evaluation function should be used and justifies the recommendation with at least three reasons supported by the data.
 
-bla bla
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Both heuristics were able to solve all the problems, as presented in the results. However, the \textit{Levelsum} heuristic took much longer to solve the problems $2$ and $3$, as well as almost the double of node expansions and goals tests. With a clear advantage of the $A^{*}$ Search using \textit{ignore preconditions} heuristic in larger state spaces, when compared to the other methods tested, this algorithm is recommended.
 
 
 
@@ -134,3 +240,4 @@ bla bla
 
 
 \end{document}
+
