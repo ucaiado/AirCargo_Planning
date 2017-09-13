@@ -50,7 +50,7 @@
 
 \lhead{\normalsize \textrm{Implement a Planning Search - Research Review}}
 \chead{}
-\rhead{\normalsize August 28, 2017}
+\rhead{\normalsize September 12, 2017}
 \lfoot{\normalsize \textrm{AIND - Udacity}}
 \cfoot{}
 \rfoot{Uirá Caiado}
@@ -66,7 +66,7 @@
 
 \begin{center}
 
-{\bf \large Review of Bla bla \\ \small Uirá Caiado}
+{\bf \large Research Review of Planning Search Language\\ \small Uirá Caiado}
 \end{center}
 
 
@@ -74,9 +74,15 @@
 
 % Udacity: The report includes a summary of at least three key developments in the field of AI planning and search.
 
-Bla bla bla bla \cite{Economist2017}.
+The task of coming up with a sequence of actions that will achieve a goal is called planning and, according to \cite{russelartificial}, the research related to this field has been central to Artificial Intelligence (AI) since its inception.
 
-Bla bla
+
+One of the first major planning systems is called STRIPS, shortening to Stanford Research Institute Problem Solver. The problem-solving program was developed primarily to solve tasks faced by a robot, as re-arranging objects. Fikes and Nilsson \cite{fikes1971strips} developed a way to represent the environment to the program, allowing it to focus on finding some composition of operators to transform an initial world state into one that would satisfy some goal condition. The representation language was chosen to be expressive enough to describe a wide variety of problems, but restrictive enough to allow STRIPS be an efficient algorithm.
+
+As suggested by \cite{russelartificial} the language developed to STRIPS has been far more influential than it algorithmic approach. However, in recent years, it has become clear that STIPS is insufficiently expressive for some real domains. As a result, many language variants have been developed, as the ADL \cite{pednault1986formulating}, or Action Description Language. It relaxed some of the STRIPS restrictions as the closed-world principle and the use of just positive literals. Considering unmentioned literals unknown and allowing negative literals and equality, \cite{pednault1994} explains that ADL attempts to strike a better balance in the tradeoff between the expressiveness of a logical formalism and the computational complexity of reasoning with that formalism.
+
+Based on ADL's expression and other planning formalisms, \cite{Ghallab1998} introduced the Planning Domain Definition Language or PDDL. It is a computer-parsable, standardized syntax for representing STRIPS, ADL, hierarchical task networks and other sublanguages. PDDL is intended to express the “physics” of a domain, as the actions that are possible or the effects of these actions. It has been used as the standard language for planning competitions at the AI Planning Systems (AIPS) conference, beginning in 1998.
+
 
 
 
